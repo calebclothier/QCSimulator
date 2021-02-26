@@ -7,7 +7,7 @@ sim = QuantumSimulator()
 program = [{ "gate": "h", "target": [0] }, 
            { "gate": "x", "target": [0, 1]},
            {"unitary": [["cos(theta/2)", "-exp(i * lambda) * sin(theta / 2)"],
-						["exp(i * phi) * sin(theta / 2)", "exp(i * lambda + i * phi) * cos(theta / 2)"]], 
+			["exp(i * phi) * sin(theta / 2)", "exp(i * lambda + i * phi) * cos(theta / 2)"]], 
             "params": { "theta": 3.1415, "phi": 1.5708, "lambda": -3.1415 }, 
             "target": [1]}]
 # Create ground state of 6-qubit quantum computer
