@@ -26,7 +26,7 @@ The simulator can handle arbitrary 1-qubit gates and 2-qubit controlled gates (e
 ``` 
 {"unitary": [[a,b],[c,d]], "target":[x]}   # Single qubit U gate
 {"unitary": [[a,b],[c,d]], "target":[x,y]}  # Controlled-U gate
-{"unitary": [["sin(theta)", "cos(theta)"],["0", "0"]], "params": {"theta": 1.57}, "target": [x]}   # Parametrized gate (all entries, even numerical ones, must be strings)
+{"unitary": [["cos(theta)", "-sin(theta)"],["sin(theta)", "cos(theta)"]], "params": {"theta": 1.57}, "target": [x]}   # Parametrized gate (all entries, even numerical ones, must be strings)
 ```
 #### Built-in gates:
 Currently available built-in gates are: 
