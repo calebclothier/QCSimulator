@@ -24,8 +24,8 @@ print(sim.get_counts(final_state, 10000))
 The simulator can handle arbitrary 1-qubit gates and 2-qubit controlled gates (e.g., CNOT). Single qubit gates are applied to the qubit at the single specified target index, while 2-qubit controlled gates are applied to the qubit at the 2nd target index, conditioned on the qubit at the 1st target index. Gates may be specified in a variety of ways.
 #### Arbitrary unitary gates:
 ``` 
-{"unitary": [[a,b],[c,d]], "target":[x]   # Single qubit U gate
-{"unitary": [[a,b],[c,d]], "target":[x,y]   # Controlled-U gate
+{"unitary": [[a,b],[c,d]], "target":[x]}   # Single qubit U gate
+{"unitary": [[a,b],[c,d]], "target":[x,y]}  # Controlled-U gate
 {"unitary": [["sin(theta)", "cos(theta)"],["0", "0"]], "params": {"theta": 1.57}, "target": [x]}   # Parametrized gate (all entries, even numerical ones, must be strings)
 ```
 #### Built-in gates:
