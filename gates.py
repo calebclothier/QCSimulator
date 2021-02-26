@@ -1,6 +1,8 @@
 import numpy as np
 
 gate_set = {
+
+	# Basic gates
 	"h": np.array([[1 / np.sqrt(2), 1 / np.sqrt(2)],
 	               [1 / np.sqrt(2), -1 / np.sqrt(2)]], dtype=np.complex64),
 	"x": np.array([[0, 1],
@@ -9,10 +11,16 @@ gate_set = {
 	               [1j, 0]], dtype=np.complex64),
 	"z": np.array([[1, 0], 
 	               [0, -1]], dtype=np.complex64),
-	"u3": [["cos(theta/2)", "-exp(i * lambda) * sin(theta / 2)"],
-		   ["exp(i * phi) * sin(theta / 2)", "exp(i * lambda + i * phi) * cos(theta / 2)"]],  # params: theta, lambda, phi
-	"phase": [[1, 0],
-              [0, "exp(i * theta)"]], # params: theta
+
+	# Parametrized gates
+	"rx": [["cos(theta / 2)", "-i * sin(theta / 2)"],
+		   ["-i * sin(theta / 2)", "cos(theta / 2)"]], # Required params: theta
+	"ry": [["cos(theta / 2)", "-sin(theta / 2)"],
+		   ["sin(theta / 2)", "cos(theta / 2)"]], # Required params: theta
+	"rz": [["exp(-i * theta / 2)", "0"],
+		   ["0", "exp(i * theta / 2)"]], # Required params: theta
+	"phase": [["1", "0"],
+              ["0", "exp(i * theta)"]], # Required params: theta
 	
 	# Controlled X, Y, Z gates are identical to X, Y, Z, gates 
 	# because the controlled application of a gate is computed by get_operator()
@@ -22,4 +30,5 @@ gate_set = {
 	               [1j, 0]], dtype=np.complex64),
 	"cz": np.array([[1, 0], 
 	               [0, -1]], dtype=np.complex64)
+
 }

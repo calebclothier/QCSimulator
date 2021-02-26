@@ -100,14 +100,14 @@ class VariableMathStringParser(object):
                 if isinstance(self.var_dict[op], str):
                     # Fetch global param if param value is a string
                     return self.global_vars[self.var_dict[op]]
-                else 
+                else:
                     return self.var_dict[op]
             else:
                 return 0
         else:
             return np.complex64(complex(op))
 
-    def eval(self, num_string, var_dict={}, global_vars = {} parseAll=True):
+    def eval(self, num_string, var_dict={}, global_vars={}, parseAll=True):
         self.exprStack = []
         self.var_dict = var_dict
         self.global_vars = global_vars

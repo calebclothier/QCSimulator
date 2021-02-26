@@ -47,7 +47,7 @@ class QuantumSimulator():
 					op = np.kron(op, np.identity(2, dtype=np.complex64))
 			return op
 
-	def run_program(self, initial_state, program):
+	def run_program(self, initial_state, program, global_vars={}):
 		""" Reads program, and for each gate:
 		     - calculates matrix operator
 		     - multiplies state with operator
@@ -57,12 +57,17 @@ class QuantumSimulator():
 		for inst in program:
 			if "gate" in inst:
 				# Use built-in gates if specified
-				op = self.get_operator(total_qubits, gate_set[inst["gate"]], inst["target"])
-				state = np.dot(state, op)
+				if "params" in inst:
+					gate = self.gate_parser(gate_set[inst["gate"]], inst["params"], global_vars)
+					op = self.get_operator(total_qubits, gate, inst["target"])
+					state = np.dot(state, op)
+				else:
+					op = self.get_operator(total_qubits, gate_set[inst["gate"]], inst["target"])
+					state = np.dot(state, op)
 			else:
 				# Otherwise use the unitary matrix that is given 
 				if "params" in inst:
-					gate = self.gate_parser(inst["unitary"], inst["params"])
+					gate = self.gate_parser(inst["unitary"], inst["params"], global_vars)
 					op = self.get_operator(total_qubits, gate, inst["target"])
 					state = np.dot(state, op)
 				else:
@@ -107,26 +112,22 @@ class QuantumSimulator():
 			results[str(outcome)] += 1
 		return dict(results)
 
-	def gate_parser(self, gate_unitary, var_dict):
+	def gate_parser(self, gate_unitary, var_dict, global_vars):
 		parsed_gate = np.zeros((len(gate_unitary), len(gate_unitary[0])), dtype=np.complex64)
 		parser = VariableMathStringParser()
 		for i in range(len(gate_unitary)):
 			for j in range(len(gate_unitary[0])):
-				expr =  parser.eval(gate_unitary[i][j], var_dict)
+				expr =  parser.eval(gate_unitary[i][j], var_dict, global_vars)
 				parsed_gate[i,j] = expr
 		return parsed_gate
 
 
 sim = QuantumSimulator()
-program = [{ "gate": "h", "target": [0] }, 
-  		   { "gate": "x", "target": [0, 1]},
-		   {"unitary": [["cos(theta/2)", "-exp(i * lambda) * sin(theta / 2)"],
-						["exp(i * phi) * sin(theta / 2)", "exp(i * lambda + i * phi) * cos(theta / 2)"]], 
-			"params": { "theta": 3.1415, "phi": 1.5708, "lambda": -3.1415 }, 
-			"target": [1]}
+program = [{"gate": "h", "target": [0] }, 
+  		   {"gate": "cx", "target": [0, 1]},
+		   {"gate": "rx", "params": {"theta": 'global_1'}, "target": [0]}
 ]
 state = sim.get_ground_state(6)
-final_state = sim.run_program(state, program)
+final_state = sim.run_program(state, program, {'global_1': np.pi/2})
 sample = sim.measure_all(final_state)
 print(sim.get_counts(final_state, 10000))
-
