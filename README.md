@@ -1,5 +1,5 @@
 # QCSimulator
-This project is a basic implementation of a quantum circuit simulator. Sample usage is provided below.
+This project is a basic implementation of a quantum circuit simulator. The main file, simulator.py, contains a simulator class. Sample usage of this class is provided below. A dictionary of built-in gates is stored in gates.py, and parsing functionality for parametrized gates is contained in mathparser.py. 
 ``` 
 # Initialize simulator object
 sim = QuantumSimulator()
